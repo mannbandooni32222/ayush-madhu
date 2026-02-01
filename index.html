@@ -49,7 +49,7 @@
     background: #6c757d;
     color: white;
     position: absolute;
-    transition: left 0.4s ease, top 0.4s ease;
+    transition: left 0.5s ease, top 0.5s ease;
   }
 
   #noMessage {
@@ -177,21 +177,28 @@
 
   function startMusic() {
     if (!musicStarted) {
-      music.play().catch(()=>{});
+      music.play().catch(() => {});
       musicStarted = true;
     }
   }
 
-  // NO button behavior
+  // NO button behavior (STAYS INSIDE SCREEN)
   noBtn.addEventListener("mouseover", () => {
     startMusic();
     noHoverCount++;
 
-    const maxX = window.innerWidth - 160;
-    const maxY = window.innerHeight - 120;
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const padding = 10;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    const maxX = window.innerWidth - btnWidth - padding;
+    const maxY = window.innerHeight - btnHeight - padding;
+
+    const minX = padding;
+    const minY = padding;
+
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = Math.random() * (maxY - minY) + minY;
 
     noBtn.style.left = `${x}px`;
     noBtn.style.top = `${y}px`;
@@ -199,7 +206,6 @@
     yesScale += 0.1;
     yesBtn.style.transform = `scale(${yesScale})`;
 
-    // Messages logic
     if (noHoverCount === 3) {
       noMessage.textContent = "Are you sure? 🐱";
     } else if (noHoverCount >= 4) {
